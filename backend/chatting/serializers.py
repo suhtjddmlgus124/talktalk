@@ -3,6 +3,8 @@ from .models import Message, Attachment
 
 
 class MessageSerializer(serializers.ModelSerializer):
+    sender = serializers.CharField(source='sender.nickname', read_only=True)
+
     class Meta:
         model = Message
         fields = ['id', 'kind', 'content', 'sender', 'sent_at']
