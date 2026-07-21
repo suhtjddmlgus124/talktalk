@@ -3,10 +3,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import api, { type AxiosError } from "@/api/api";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { FieldGroup, Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 
 const loginSchema = z.object({
@@ -29,7 +31,8 @@ export default function Login() {
             return response.data;
         },
         onSuccess: () => {
-            alert('로그인 성공');
+            toast.success('로그인에 성공했습니다.');
+            navigate('/');
         },
         onError: (error) => {
             if(error.response) {
@@ -47,12 +50,13 @@ export default function Login() {
             }
         },
     });
+    const navigate = useNavigate();
 
     return (
         <div className="absolute flex inset-0 justify-center items-center">
             <Card className="w-120">
                 <CardHeader>
-                    <CardTitle>로그인</CardTitle>
+                    <CardTitle className="text-lg font-bold">로그인</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form id="login-form" onSubmit={form.handleSubmit((data)=>mutation.mutate(data))}>
@@ -75,8 +79,11 @@ export default function Login() {
                         </FieldGroup>
                     </form>
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="flex-col gap-2">
                     <Button className="w-full" type="submit" form="login-form">로그인</Button>
+                    <Button className="w-full" variant="link" asChild>
+                        <Link to="/register">회원가입</Link>
+                    </Button>
                 </CardFooter>
             </Card>
         </div>
