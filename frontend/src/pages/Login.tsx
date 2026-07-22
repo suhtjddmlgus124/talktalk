@@ -1,7 +1,7 @@
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api, { type AxiosError } from "@/api/api";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
@@ -31,6 +31,7 @@ export default function Login() {
             return response.data;
         },
         onSuccess: () => {
+            queryClient.resetQueries({ queryKey: ['account', 'profile'] })
             toast.success('로그인에 성공했습니다.');
             navigate('/');
         },
@@ -51,6 +52,7 @@ export default function Login() {
         },
     });
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     return (
         <div className="absolute flex inset-0 justify-center items-center">

@@ -1,7 +1,13 @@
+import { useProfileQuery } from "@/api/profile";
+import { Container } from "@/components/ui/container";
+
+
 export default function Index() {
+
+    
     return (
-        <div>
+        <Container>
             인덱스
-        </div>
+        </Container>
     );
 }
