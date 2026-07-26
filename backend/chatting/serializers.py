@@ -12,9 +12,11 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class AttachmentSerializer(serializers.ModelSerializer):
+    filename = serializers.CharField(read_only=True)
+
     class Meta:
         model = Attachment
-        fields = ['file']
+        fields = ['file', 'filename']
 
     def create(self, validated_data):
         file = validated_data['file']
