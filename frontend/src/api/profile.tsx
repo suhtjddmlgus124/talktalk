@@ -1,8 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import api, { type AxiosError } from "./api";
 import axios from "axios";
-import type { Profile } from "./types/account";
+import type { Profile } from "@/types/account";
 
 
 export function useProfileQuery() {
@@ -33,6 +34,7 @@ export function useLogoutMutation() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['account', 'profile'] });
+            toast.success('로그아웃 되었습니다.');
             navigate('/login');
         },
     });

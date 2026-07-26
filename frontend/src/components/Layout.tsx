@@ -23,7 +23,7 @@ export default function Layout() {
         <Navigate to="/login" />
     );
     return (
-        <SidebarProvider>
+        <SidebarProvider className="h-screen">
             <Sidebar />
             <SidebarInset>
                 <SidebarTrigger size="icon-lg" />

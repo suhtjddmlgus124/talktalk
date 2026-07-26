@@ -4,7 +4,7 @@ import {
     SidebarMenu, SidebarMenuItem, SidebarMenuButton,
 } from "./ui/sidebar";
 import { UserCircleIcon, LogOutIcon } from "lucide-react";
-import type { Profile } from "@/api/types/account";
+import type { Profile } from "@/types/account";
 
 
 export default function Sidebar() {
