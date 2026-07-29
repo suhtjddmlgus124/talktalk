@@ -1,14 +1,18 @@
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useProfileQuery } from "@/api/profile";
 import api from "@/api/api";
 
 import { Container } from "@/components/ui/container";
 import { Message, MessageHeader, MessageContent, MessageFooter, MessageGroup } from "@/components/ui/message";
-import { Bubble, BubbleContent, BubbleGroup } from "@/components/ui/bubble";
+import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { Attachment, AttachmentMedia, AttachmentContent, AttachmentAction, AttachmentTitle } from "@/components/ui/attachment";
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { MessageScroller, MessageScrollerContent, MessageScrollerButton, MessageScrollerViewport, MessageScrollerItem, useMessageScroller } from "@/components/ui/message-scroller";
+import { FileTextIcon, DownloadIcon, PlusIcon, SendHorizontalIcon } from "lucide-react";
 
-import { FileTextIcon, DownloadIcon } from "lucide-react";
 import type { ChattingMessage } from "@/types/chatting";
 import type { Profile } from "@/types/account";
 
@@ -179,7 +183,6 @@ function MultipleTimeMessageGroup({ multipleGroupedMessage, profile }: { multipl
 }
 
 
-
 export default function Index() {
     const messages = useQuery<ChattingMessage[]>({
         queryKey: ['chatting', 'message'],
@@ -188,7 +191,9 @@ export default function Index() {
             return response.data;
         }
     });
+    const [ message, setMessage ] = useState<string>("");
     const profile = useProfileQuery();
+    const queryClient = useQueryClient();
 
     const multipleGroupedMessages = useMemo<MultipleTimeGroupedDatedChattingMessage[] | undefined>(() => {
         if(messages.isSuccess) {
@@ -196,6 +201,45 @@ export default function Index() {
         }
 
     }, [ messages.isSuccess, messages.data ]);
+
+    const scroller = useMessageScroller();
+
+    const socketRef = useRef<WebSocket | null>(null);
+
+    useEffect(() => {
+        socketRef.current = new WebSocket('ws://127.0.0.1:8000/ws/chatting/message/');
+        socketRef.current.onmessage = (e) => {
+            const chattingMessage = JSON.parse(e.data) as ChattingMessage;
+            queryClient.setQueryData<ChattingMessage[]>(
+                ['chatting', 'message'],
+                (prev = []) => [...prev, chattingMessage],
+            );
+            
+        }
+
+        return () => {
+            socketRef.current?.close();
+        };
+
+    }, []);
+
+    function sendMessage(message: string) {
+        if(socketRef.current && message) {
+            socketRef.current.send(JSON.stringify({
+                kind: 'TEXT',
+                content: message,
+            }));
+            setMessage("");
+        }
+    }
+    function handleSubmit(e: React.SubmitEvent) {
+        e.preventDefault();
+        sendMessage(message);
+
+        requestAnimationFrame(() => {
+            scroller.scrollToEnd();
+        });
+    }
 
     if(messages.isPending || profile.isPending) return (
         <Container>
@@ -209,9 +253,32 @@ export default function Index() {
     );
     return (
         <Container>
-            {multipleGroupedMessages?.map((multipleGroupedMessage, idx) => (
-                <MultipleTimeMessageGroup multipleGroupedMessage={multipleGroupedMessage} key={idx} profile={profile.data as Profile} />
-            ))}
+            <div className="flex flex-col h-full justify-end">
+                <MessageScroller>
+                    <MessageScrollerViewport>
+                        <MessageScrollerContent className="p-6">
+                            {multipleGroupedMessages?.map((multipleGroupedMessage, idx) => (
+                                <MessageScrollerItem key={idx}>
+                                    <MultipleTimeMessageGroup multipleGroupedMessage={multipleGroupedMessage} key={idx} profile={profile.data as Profile} />
+                                </MessageScrollerItem>
+                            ))}
+                        </MessageScrollerContent>
+                    </MessageScrollerViewport>
+                    <MessageScrollerButton size="icon-lg" className="rounded-full" />
+                </MessageScroller>
+
+                <form className="flex gap-2 p-6" onSubmit={(e) => handleSubmit(e)}>
+                    <Button variant="outline" className="size-8 rounded-full" type="button">
+                        <PlusIcon />
+                    </Button>
+                    <Field>
+                        <Input value={message} onChange={(e)=>setMessage(e.currentTarget.value)} />
+                    </Field>
+                    <Button className="size-8 rounded-full" type="submit">
+                        <SendHorizontalIcon />
+                    </Button>
+                </form>
+            </div>
         </Container>
     );
 }
