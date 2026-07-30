@@ -5,3 +5,11 @@ export function Container({ children }: { children?: React.ReactNode }) {
         </div>
     );
 }
+
+export function CenterContainer({ children }: { children?: React.ReactNode }) {
+    return (
+        <div className="absolute flex inset-0 justify-center items-center">
+            { children }
+        </div>
+    );
+}

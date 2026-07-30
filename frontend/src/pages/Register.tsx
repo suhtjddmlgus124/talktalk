@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import api, { type AxiosError } from "@/api/api";
 import { Link, useNavigate } from "react-router-dom";
+import { CenterContainer } from "@/components/ui/container";
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { FieldGroup, Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -60,7 +61,7 @@ export default function Register() {
     const navigate = useNavigate();
 
     return (
-        <div className="absolute flex inset-0 justify-center items-center">
+        <CenterContainer>
             <Card className="w-120">
                 <CardHeader>
                     <CardTitle className="text-lg font-bold">회원가입</CardTitle>
@@ -107,6 +108,6 @@ export default function Register() {
                     </Button>
                 </CardFooter>
             </Card>
-        </div>
+        </CenterContainer>
     );
 }
