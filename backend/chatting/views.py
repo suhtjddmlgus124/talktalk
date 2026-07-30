@@ -1,4 +1,4 @@
-from rest_framework import mixins, viewsets
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -15,13 +15,13 @@ from .models import Message, Attachment
 from .serializers import MessageSerializer, AttachmentSerializer
 
 
-class MessageViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class MessageListView(ListAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = [ IsAuthenticated ]
 
 
-class AttachmentViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class AttachmentRetrieveView(RetrieveAPIView):
     queryset = Attachment.objects.all()
     serializer_class = AttachmentSerializer
     permission_classes = [ IsAuthenticated ]

@@ -1,16 +1,12 @@
 from django.urls import path
-from rest_framework.routers import SimpleRouter
 from . import views
 
 
 app_name = 'chatting'
 
-router = SimpleRouter()
-router.register('message', views.MessageViewSet)
-router.register('attachment', views.AttachmentViewSet)
-
 urlpatterns = [
-    path('file/', views.UploadFileView.as_view(), name='upload-file'),
-    path('image/', views.UploadImageView.as_view(), name='upload-image'),
-    *router.urls,
+    path('message/', views.MessageListView.as_view(), name='message-list'),
+    path('attachment/<int:pk>/', views.AttachmentRetrieveView.as_view(), name='attachment-retrieve'),
+    path('upload-file/', views.UploadFileView.as_view(), name='upload-file'),
+    path('upload-image/', views.UploadImageView.as_view(), name='upload-image'),
 ]
