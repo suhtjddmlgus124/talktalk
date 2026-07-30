@@ -11,7 +11,8 @@ import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageScroller, MessageScrollerContent, MessageScrollerButton, MessageScrollerViewport, MessageScrollerItem, useMessageScroller } from "@/components/ui/message-scroller";
-import { FileTextIcon, DownloadIcon, PlusIcon, SendHorizontalIcon } from "lucide-react";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { FileTextIcon, DownloadIcon, PlusIcon, SendHorizontalIcon, ImageIcon, PaperclipIcon } from "lucide-react";
 
 import type { ChattingMessage } from "@/types/chatting";
 import type { Profile } from "@/types/account";
@@ -268,9 +269,24 @@ export default function Index() {
                 </MessageScroller>
 
                 <form className="flex gap-2 p-6" onSubmit={(e) => handleSubmit(e)}>
-                    <Button variant="outline" className="size-8 rounded-full" type="button">
-                        <PlusIcon />
-                    </Button>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="size-8 rounded-full" type="button">
+                                <PlusIcon />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuItem>
+                                <ImageIcon />
+                                이미지
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <PaperclipIcon />
+                                파일
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
                     <Field>
                         <Input value={message} onChange={(e)=>setMessage(e.currentTarget.value)} />
                     </Field>
