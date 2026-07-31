@@ -1,7 +1,7 @@
 from .base import *
 
 
-DEBUG = True
+DEBUG = (os.environ.get('DEBUG') == 'true')
 
 ALLOWED_HOSTS = [ os.environ.get('ALLOWED_HOST') ]
 
