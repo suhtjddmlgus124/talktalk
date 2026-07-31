@@ -3,7 +3,7 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ os.environ.get('ALLOWED_HOST') ]
 
 DATABASES = {
     'default': {
