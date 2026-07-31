@@ -28,7 +28,7 @@ MEDIA_ROOT = os.environ.get('MEDIA_ROOT')
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAdminUser'],
-    'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.BrowsableAPIRenderer' if DEBUG else 'rest_framework.renderers.JSONRenderer'],
+    'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer', 'rest_framework.renderers.BrowsableAPIRenderer'] if DEBUG else ['rest_framework.renderers.JSONRenderer'],
 }
 
 CHANNEL_LAYERS = {
