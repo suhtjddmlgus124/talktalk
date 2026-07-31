@@ -2,8 +2,15 @@ from .base import *
 
 
 DEBUG = (os.environ.get('DEBUG') == 'true')
-
+SECRET_KEY = os.environ.get('SECRET_KEY')
 ALLOWED_HOSTS = [ os.environ.get('ALLOWED_HOST') ]
+
+SECURE_SSL_REDIRECT = True
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SECURE_HSTS_SECONDS = 0
 
 DATABASES = {
     'default': {
