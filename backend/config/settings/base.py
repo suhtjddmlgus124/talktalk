@@ -130,6 +130,3 @@ MEDIA_URL = 'media/'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAdminUser'],
 }
-
-
-USE_X_ACCEL_REDIRECT = (os.environ.get('USE_X_ACCEL_REDIRECT', 'false') == 'true')

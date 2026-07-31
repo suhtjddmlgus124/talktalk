@@ -13,7 +13,7 @@ load_dotenv()
 
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
-from channels.security.websocket import OriginValidator
+from channels.security.websocket import AllowedHostsOriginValidator
 from django.core.asgi import get_asgi_application
 from django.contrib.staticfiles.handlers import ASGIStaticFilesHandler
 from django.conf import settings
@@ -27,12 +27,11 @@ from chatting.consumers import MessageConsumer
 
 application = ProtocolTypeRouter({
     'http': django_asgi_app,
-    'websocket': OriginValidator(
+    'websocket': AllowedHostsOriginValidator(
         AuthMiddlewareStack(
             URLRouter([
                 path('ws/chatting/message/', MessageConsumer.as_asgi())
             ])
-        ),
-        settings.CSRF_TRUSTED_ORIGINS,
+        )
     ),
 })
