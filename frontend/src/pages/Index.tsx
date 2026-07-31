@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProfileQuery } from "@/api/profile";
 import api from "@/api/api";
 
@@ -196,6 +196,58 @@ export default function Index() {
     const profile = useProfileQuery();
     const queryClient = useQueryClient();
 
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const uploadFileMutation = useMutation({
+        mutationKey: ['chatting', 'upload-file'],
+        mutationFn: async (file: File) => {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            const response = await api.post('/api/chatting/upload-file/', formData);
+            return response.data;
+        },
+    });
+    function handleUploadFileClick() {
+        fileInputRef.current?.click();
+    }
+    function handleUploadFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.currentTarget.files?.[0];
+        if(!file) return;
+
+        uploadFileMutation.mutate(file);
+        e.currentTarget.value = "";
+
+        requestAnimationFrame(() => {
+            scroller.scrollToEnd();
+        });
+    }
+
+    const imageInputRef = useRef<HTMLInputElement>(null);
+    const uploadImageMutation = useMutation({
+        mutationKey: ['chatting', 'upload-image'],
+        mutationFn: async (file: File) => {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await api.post('/api/chatting/upload-image/', formData);
+            return response.data;
+        }
+    });
+    function handleUploadImageClick() {
+        imageInputRef.current?.click();
+    }
+    function handleUploadImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.currentTarget.files?.[0];
+        if(!file) return;
+
+        uploadImageMutation.mutate(file);
+        e.currentTarget.value = "";
+
+        requestAnimationFrame(() => {
+            scroller.scrollToEnd();
+        });
+    }
+
     const multipleGroupedMessages = useMemo<MultipleTimeGroupedDatedChattingMessage[] | undefined>(() => {
         if(messages.isSuccess) {
             return getMultipleTimeGroupedDatedChattingMessages(getDatedChattingMessages(messages.data));
@@ -276,11 +328,11 @@ export default function Index() {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleUploadImageClick}>
                                 <ImageIcon />
                                 이미지
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleUploadFileClick}>
                                 <PaperclipIcon />
                                 파일
                             </DropdownMenuItem>
@@ -294,6 +346,11 @@ export default function Index() {
                         <SendHorizontalIcon />
                     </Button>
                 </form>
+
+                <div className="hidden">
+                    <input type="file" ref={imageInputRef} onChange={handleUploadImageChange}/>
+                    <input type="file" ref={fileInputRef} onChange={handleUploadFileChange}/>
+                </div>
             </div>
         </Container>
     );
