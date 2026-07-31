@@ -260,7 +260,7 @@ export default function Index() {
     const socketRef = useRef<WebSocket | null>(null);
 
     useEffect(() => {
-        socketRef.current = new WebSocket('ws://127.0.0.1:8000/ws/chatting/message/');
+        socketRef.current = new WebSocket(`${location.protocol === 'https' ? 'wss' : 'ws'}://${location.host}/ws/chatting/message/`);
         socketRef.current.onmessage = (e) => {
             const chattingMessage = JSON.parse(e.data) as ChattingMessage;
             queryClient.setQueryData<ChattingMessage[]>(
