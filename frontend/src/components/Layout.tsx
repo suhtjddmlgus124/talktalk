@@ -1,4 +1,4 @@
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, Navigate } from "react-router";
 import { useProfileQuery } from "@/api/profile";
 import { CenterContainer } from "./ui/container";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "./ui/sidebar";

@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import { TooltipProvider } from "./components/ui/tooltip";
 import { MessageScrollerProvider } from "./components/ui/message-scroller";
 import { Toaster } from "./components/ui/sonner";
