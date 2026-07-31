@@ -83,7 +83,7 @@ export default function Login() {
                     </form>
                 </CardContent>
                 <CardFooter className="flex-col gap-2">
-                    <Button className="w-full" type="submit" form="login-form">로그인</Button>
+                    <Button className="w-full" type="submit" form="login-form" disabled={mutation.isPending}>로그인</Button>
                     <Button className="w-full" variant="link" asChild>
                         <Link to="/register">회원가입</Link>
                     </Button>

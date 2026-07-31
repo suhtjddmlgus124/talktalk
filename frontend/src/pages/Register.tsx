@@ -102,7 +102,7 @@ export default function Register() {
                     </form>
                 </CardContent>
                 <CardFooter className="flex-col gap-2">
-                    <Button className="w-full" type="submit" form="register-form">회원가입</Button>
+                    <Button className="w-full" type="submit" form="register-form" disabled={mutation.isPending}>회원가입</Button>
                     <Button className="w-full" variant="link" asChild>
                         <Link to="/login">로그인</Link>
                     </Button>
