@@ -31,7 +31,7 @@ export default function App() {
                 <RouterProvider router={router} />
                 <Toaster position="bottom-center" toastOptions={{ className: 'font-sans' }} />
             </TooltipProvider>
-            {/* <ReactQueryDevtools /> */}
+            {import.meta.env.DEV && <ReactQueryDevtools />}
         </QueryClientProvider>
     );
 }
