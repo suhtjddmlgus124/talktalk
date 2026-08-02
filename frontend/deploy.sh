@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
-echo "Building..."
+echo "==> Building..."
 npm run build
 
-echo "Deploying..."
+echo "==> Deploying..."
 rsync -av --delete dist/ /var/www/talktalk/frontend/
 
-echo "Reloading nginx..."
+echo "==> Reloading nginx..."
 sudo systemctl reload nginx
 
-echo "Deploy complete."
+echo "==> Deploy complete."
