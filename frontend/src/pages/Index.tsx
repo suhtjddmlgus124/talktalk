@@ -305,10 +305,10 @@ export default function Index() {
         </Container>
     );
     return (
-        <Container>
-            <div className="flex flex-col h-full justify-end">
-                <MessageScroller>
-                    <MessageScrollerViewport>
+        <Container className="h-full">
+            <div className="flex flex-col h-full">
+                <MessageScroller className="min-h-0 flex-1">
+                    <MessageScrollerViewport className="h-full">
                         <MessageScrollerContent className="p-6">
                             {multipleGroupedMessages?.map((multipleGroupedMessage, idx) => (
                                 <MessageScrollerItem key={idx}>
