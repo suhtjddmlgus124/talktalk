@@ -33,7 +33,7 @@ class AttachmentRetrieveView(RetrieveAPIView):
         if settings.USE_X_ACCEL_REDIRECT:
             response = HttpResponse()
             response['X-Accel-Redirect'] = attachment.file.url
-            response['Content-Disposition'] = f"{'attachment' if as_attachment else 'inline'}; filename*=UTF-8''{quote(attachment.file.filename)}"
+            response['Content-Disposition'] = f"{'attachment' if as_attachment else 'inline'}; filename*=UTF-8''{quote(attachment.filename)}"
             return response
 
         else:
