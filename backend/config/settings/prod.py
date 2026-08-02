@@ -10,6 +10,8 @@ CSRF_COOKIE_SECURE = True
 
 SECURE_HSTS_SECONDS = 0
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
