@@ -4,13 +4,12 @@ from .base import *
 DEBUG = (os.environ.get('DEBUG') == 'true')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 ALLOWED_HOSTS = [ os.environ.get('ALLOWED_HOST') ]
+CSRF_TRUSTED_ORIGINS = [ f'https://{os.environ.get('ALLOWED_HOST')}' ]
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 SECURE_HSTS_SECONDS = 0
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 DATABASES = {
     'default': {
