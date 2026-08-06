@@ -83,6 +83,8 @@ class UploadImageView(APIView):
         with transaction.atomic():
             attachment_serializer = AttachmentSerializer(data=request.data)
             attachment_serializer.is_valid(raise_exception=True)
+            if not attachment_serializer.validated_data['file'].content_type.startswith('image/'):
+                return Response({'file': ['이미지만 업로드 할 수 있습니다.']}, status.HTTP_400_BAD_REQUEST)
             attachment_serializer.save()
 
             message_serializer = MessageSerializer(data={

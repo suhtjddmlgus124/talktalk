@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProfileQuery } from "@/api/profile";
 import api from "@/api/api";
+import axios from "axios";
 
 import { Container } from "@/components/ui/container";
 import { Message, MessageHeader, MessageContent, MessageFooter, MessageGroup } from "@/components/ui/message";
@@ -12,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageScroller, MessageScrollerContent, MessageScrollerButton, MessageScrollerViewport, MessageScrollerItem, useMessageScroller } from "@/components/ui/message-scroller";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 import { FileTextIcon, DownloadIcon, PlusIcon, SendHorizontalIcon, ImageIcon, PaperclipIcon } from "lucide-react";
 
 import type { ChattingMessage } from "@/types/chatting";
@@ -231,7 +233,20 @@ export default function Index() {
 
             const response = await api.post('/api/chatting/upload-image/', formData);
             return response.data;
-        }
+        },
+        onError: (error) => {
+            if(axios.isAxiosError(error)) {
+                if(error.response?.status === 400) {
+                    toast.error('이미지만 업로드 할 수 있습니다.');
+                }
+                else {
+                    toast.error('알 수 없는 오류가 발생했습니다.');
+                }
+            }
+            else {
+                toast.error('알 수 없는 오류가 발생했습니다.');
+            }
+        },
     });
     function handleUploadImageClick() {
         imageInputRef.current?.click();
@@ -348,7 +363,7 @@ export default function Index() {
                 </form>
 
                 <div className="hidden">
-                    <input type="file" ref={imageInputRef} onChange={handleUploadImageChange}/>
+                    <input type="file" accept="image/*" ref={imageInputRef} onChange={handleUploadImageChange}/>
                     <input type="file" ref={fileInputRef} onChange={handleUploadFileChange}/>
                 </div>
             </div>
